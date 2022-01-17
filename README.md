@@ -16,10 +16,10 @@
 ## Executable creation using Nuitka 
 * python -m nuitka --standalone --include-package-data=slixmpp nww_oi_muc.py
 
+## Move to /opt
+sudo cp -R $HOME/nwwsoi-ldm/nww_oi_muc.dist /opt/nwwsoi-ldm
+sudo chown -R ldm:ldm /opt/nwwsoi-ldm
+
 ## Command Line Execution 
 
-`./dist/nww_oi_muc --jid=<user id> --password=<password>`
-
-## Command Line Execution with Visualization
-
-`./dist/nww_oi_muc --jid=<user id> --password=<password> --metrics`
+`/opt/nwwsoi-ldm/nww_oi_muc --jid=<user id> --password=<password> --ldmcmd="<location of pqinsert>"`
