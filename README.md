@@ -14,7 +14,7 @@
 * scl enable gcc-toolset-9 bash
 
 ## Executable creation using Nuitka 
-* python -m nuitka --standalone  nww_oi_muc.py
+* python -m nuitka --standalone --include-package-data=slixmpp nww_oi_muc.py
 
 ## Command Line Execution 
 
