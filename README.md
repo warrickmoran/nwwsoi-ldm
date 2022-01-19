@@ -1,26 +1,33 @@
 # nwwsoi-ldm
 
+## Prerequisite
+* LDMD
+* Python +3.8
+
 ## Python Requirements
-* Version +3.6
+* Version +3.8
 * Packages
 * slixmpp
 * libpython-static
 * psutil
 * nuitka (if creating executable)
 
+## Conda VirtEnv Setup (optional)
+* conda create --name nwws python=3.8 slixmpp libpython-static nuitka yaml coloredlogs psutil patchelf
+
 ## Additional Requirements Under RedHat 8 to remove libpython linking issues
 * sudo dnf install gcc-toolset-9-binutils-devel
 
 ## Enable GCC-Toolset-9
 * scl enable gcc-toolset-9 bash
+* (if using conda) conda activate nwws
 
 ## Executable creation using Nuitka 
-* sudo python -m nuitka --standalone --include-package-data=slixmpp --remove-output nww_oi_muc.py
+* python -m nuitka --standalone --include-package-data=slixmpp --remove-output nwwsoi-ldm.py
 
 ## Move to /opt
-* sudo cp -R <repository>/nwwsoi-ldm/nww_oi_muc.dist /opt/nwwsoi-ldm
+* sudo cp -R <repository>/nwwsoi-ldm/nwwsoi-ldm.dist /opt/nwwsoi_ldm
 * sudo chown -R ldm:ldm /opt/nwwsoi-ldm
 
 ## Command Line Execution 
-
-`/opt/nwwsoi-ldm/nww_oi_muc --jid=<user id> --password=<password> --ldm`
+`/opt/nwwsoi_ldm/nwwsoi-ldm --jid=<user id> --password=<password> --ldm`
