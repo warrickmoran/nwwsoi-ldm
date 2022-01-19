@@ -14,13 +14,13 @@ import nwws_oi_ldm_encoder as LdmEncoder
 
 class MUCBot(slixmpp.ClientXMPP):
 
-    def __init__(self, jid, password, room, nick, server_url, queue, ldmcmd=None):
+    def __init__(self, jid, password, room, nick, server_url, queue, ldm=False):
         slixmpp.ClientXMPP.__init__(self, jid, password)
 
         self.room = room
         self.nick = "OPPSD.SEIT.OIMONITOR-{}/v1.0(http://n.a;warrick.moran@noaa.gov)".format(nick)
         self.server_url = server_url
-        self.ldmcmd = ldmcmd
+        self.ldm = ldm
         self.queue = queue
 
         # The session_start event will be triggered when
@@ -66,7 +66,7 @@ class MUCBot(slixmpp.ClientXMPP):
                                          password=self.password)
         
         
-        self.ldm_encoder = LdmEncoder.MucBotLDMEncoder("pqingest")
+        self.ldm_encoder = LdmEncoder.MucBotLDMEncoder(self.ldm)
         asyncio.create_task(self.consume("Message Ingest", self.queue))
         await self.queue.join()
 
@@ -76,7 +76,7 @@ class MUCBot(slixmpp.ClientXMPP):
     async def consume(self, name, q: asyncio.Queue) -> None:
         while True:
             product = await q.get()
-            logging.info("Consumer {0} got element <{1}>".format(name, product))
+            logging.debug("Consumer {0} got element <{1}>".format(name, product))
            
             self.ldm_encoder.sendToLDM(product)
             

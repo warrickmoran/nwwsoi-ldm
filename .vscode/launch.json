@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--jid","claudina.castro","--password","claudinac", "--ldmcmd", ""]
+            "args": ["--jid","claudina.castro","--password","claudinac", "--ldm"]
         }
     ]
 }
