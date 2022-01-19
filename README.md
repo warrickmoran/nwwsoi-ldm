@@ -9,7 +9,7 @@
 * nuitka (if creating executable)
 
 ## Additional Requirements Under RedHat 8 to remove libpython linking issues
-* sudo dnf install gcc-toolset-9-devel
+* sudo dnf install gcc-toolset-9-binutils-devel
 
 ## Enable GCC-Toolset-9
 * scl enable gcc-toolset-9 bash
