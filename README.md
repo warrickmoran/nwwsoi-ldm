@@ -13,7 +13,7 @@
 * nuitka (if creating executable)
 
 ## Conda VirtEnv Setup (optional)
-* conda create --name nwws python=3.8 slixmpp libpython-static nuitka yaml coloredlogs psutil patchelf
+* conda create --name nwws python=3.8 slixmpp libpython-static nuitka pyyaml coloredlogs psutil patchelf
 
 ## Additional Requirements Under RedHat 8 to remove libpython linking issues
 * sudo dnf install gcc-toolset-9-binutils-devel
