@@ -27,7 +27,7 @@
 
 ## Move to /opt
 * sudo cp -R <repository>/nwwsoi-ldm/nwwsoi-ldm.dist /opt/nwwsoi_ldm
-* sudo chown -R ldm:ldm /opt/nwwsoi-ldm
+* sudo chown -R ldm:ldm /opt/nwwsoi_ldm
 
 ## Command Line Execution 
 `/opt/nwwsoi_ldm/nwwsoi-ldm --jid=<user id> --password=<password> --ldm`
