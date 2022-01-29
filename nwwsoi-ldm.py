@@ -36,6 +36,7 @@ import slixmpp.plugins.xep_0030 as xep_0030
 import slixmpp.plugins.xep_0045 as xep_0045
 import slixmpp.plugins.xep_0199 as xep_0199
 import slixmpp.plugins.xep_0004 as xep_0004
+import slixmpp.plugins.xep_0092 as xep_0092
 
 from socket import gethostname
 import nwws_oi_muc_slibot as bot
@@ -59,7 +60,7 @@ DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
 OI_URL = "nwws-oi.weather.gov"
-OI_PORT = 5223
+OI_PORT = 5222
 
 
 def main(argv=None):
@@ -101,6 +102,8 @@ def main(argv=None):
                           help="MUC metrics display interval", default=5, type=int)
         parser.add_option("-d", "--ldm", dest="ldm",
                           help="location of pqinsert command", default=False, action="store_true")
+        parser.add_option("-u", "--url", dest="url",
+                          help="url for OpenFire server", default='nwws-oi.weather.gov')
 
         # process options
         (opts, args) = parser.parse_args()
@@ -133,14 +136,15 @@ def main(argv=None):
             opts.jid = "{}@{}".format(opts.jid,
                                       'conference.nwws-oi.weather.gov/nwws-oi')
 
+
         global xmpp
 
         q = asyncio.Queue()
 
         xmpp = bot.MUCBot(opts.jid, opts.password, opts.room,
-                          opts.nick, OI_URL, q, opts.ldm)
+                          opts.nick, opts.url, q, opts.ldm)
 
-        sleek(q)
+        sleek(q, opts.url)
 
     except Exception as e:
         print(e)
@@ -193,7 +197,7 @@ def handler(signal_received, frame):
         exit(0)
 
 
-def sleek(q):
+def sleek(q, url):
     features_starttls.STARTTLS.name
 
     features_bind.FeatureBind.name
@@ -205,7 +209,7 @@ def sleek(q):
         'xep_0199', {'keepalive': True, 'interval': 300, 'timeout': 5})  # XMPP Ping
 
     # Connect to the XMPP server and start processing XMPP stanzas.
-    xmpp.connect((OI_URL, OI_PORT), use_ssl=False)
+    xmpp.connect((url, OI_PORT), use_ssl=False)
     xmpp.process()
 
 

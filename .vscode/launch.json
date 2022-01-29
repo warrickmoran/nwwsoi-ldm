@@ -10,7 +10,8 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--jid","claudina.castro","--password","claudinac", "--ldm"]
+            //"args": ["--jid","claudina.castro","--password","claudinac", "--ldm"]
+            "args": ["--jid","nwws_test@conference.esd-nwws-oi.weather.gov/nwws-oi","--password","nwws_test","--room","nwws@conference.esd-nwws-oi.weather.gov/nwws-oi", "--url", "esd-nwws-oi.weather.gov"]
         }
     ]
 }
