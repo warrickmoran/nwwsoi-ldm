@@ -29,7 +29,7 @@
 * python -m nuitka --standalone --include-package-data=slixmpp --remove-output nwwsoi-ldm.py
 
 ## Move to /opt
-* sudo cp -R <repository>/nwwsoi-ldm/nwwsoi-ldm.dist /opt/nwwsoi_ldm
+* sudo cp -R \<repository\>/nwwsoi-ldm/nwwsoi-ldm.dist /opt/nwwsoi_ldm
 * sudo chown -R ldm:ldm /opt/nwwsoi_ldm
 
 ## Command Line Execution 
