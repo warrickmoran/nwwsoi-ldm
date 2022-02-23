@@ -18,11 +18,10 @@
 ## Additional Requirements Under RedHat 8 to remove libpython linking issues
 * sudo dnf install gcc-toolset-9-binutils-devel
 
-## Activate VirtEnv "nwws"
-* conda activate nwws
-
 ## Enable GCC-Toolset-9
 * scl enable gcc-toolset-9 bash
+
+## Activate VirtEnv "nwws"
 * (if using conda) conda activate nwws
 
 ## Executable creation using Nuitka 
