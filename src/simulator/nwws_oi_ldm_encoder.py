@@ -5,7 +5,14 @@ import os
 import logging
 import re
 import psutil
-import signal
+
+from slixmpp.stanza import Message
+from slixmpp.xmlstream import ElementBase, register_stanza_plugin
+from helpers.nww_oi_muc_stanza import X as CustomStanza
+from slixmpp.xmlstream.matcher import StanzaPath
+from slixmpp.xmlstream.handler import Callback
+
+import asyncio
 
 from datetime import datetime
 
@@ -17,15 +24,57 @@ class MucBotLDMEncoder:
     that mentions the bot's nickname.
     """
 
-    def __init__(self, activate=False):
+    def __init__(self, client, activate=False):
         self.activate = activate
         self.count = 0
+        self.slixmpp_client = client
+        self.queue = None
 
         self.PQINSERT_CMD = "/home/ldm/bin/pqinsert"
         self.REGEX = "(\d\d\d\s+)(.*)"
 
+        self._slixmpp_initialize()
+
         if not self.activate:
             logging.warning("Send To LDM Disabled")
+
+    async def _queue_initialize(self):
+        self.queue = asyncio.Queue()
+        asyncio.create_task(self.consume("Message Ingest", self.queue))
+        await self.queue.join()
+
+    def _slixmpp_initialize(self):
+        #self.slixmpp_client.register_stanza_plugin(Message, CustomStanza)
+        self.slixmpp_client.register_handler(Callback('NWWS-OI/X Message', StanzaPath('{%s}message/{%s}x' % (self.slixmpp_client.default_ns,self.slixmpp_client.default_ns)),self._message))
+        self.slixmpp_client.add_event_handler('_custom_handle_x', self._handle_x_event)
+
+    def _message(self, msg):
+        if msg['mucnick'] != self.slixmpp_client.nick:
+            cccc = msg['x'].xml.attrib['cccc']
+            ttaaii = msg['x'].xml.attrib['ttaaii']
+            issue = msg['x'].xml.attrib['issue']
+            awipsid = msg['x'].xml.attrib['awipsid']
+            content = msg['x'].xml.text
+        
+            logging.info("Product Content: {} {} {} {}".format(ttaaii,cccc,issue,awipsid))
+
+            if (self.activate):
+                self.slixmpp_client.event('_custom_handle_x', (ttaaii,cccc,awipsid,content))
+
+    async def _handle_x_event(self, msg):
+        if (self.queue == None):
+            await self._queue_initialize()
+
+        await self.queue.put(msg)
+
+    async def consume(self, name, q: asyncio.Queue) -> None:
+        while True:
+            product = await q.get()
+            logging.debug("Consumer {0} got element <{1}>".format(name, product))
+           
+            self.sendToLDM(product)
+            
+            q.task_done()
 
     def sendToLDM(self, product):
         if self.activate:

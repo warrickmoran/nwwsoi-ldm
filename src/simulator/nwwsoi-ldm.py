@@ -18,6 +18,9 @@ It defines classes_and_methods
 '''
 
 import sys
+sys.path.append("..")
+
+import sys
 import os
 import yaml
 import logging.config
@@ -39,7 +42,9 @@ import slixmpp.plugins.xep_0004 as xep_0004
 import slixmpp.plugins.xep_0092 as xep_0092
 
 from socket import gethostname
-import nwws_oi_muc_slibot as bot
+import helpers.nwws_oi_muc_slibot as bot
+import simulator.nwws_oi_ldm_encoder as ldm
+
 from signal import signal, SIGINT
 from sys import exit
 
@@ -139,12 +144,11 @@ def main(argv=None):
 
         global xmpp
 
-        q = asyncio.Queue()
-
         xmpp = bot.MUCBot(opts.jid, opts.password, opts.room,
-                          opts.nick, opts.url, q, opts.ldm)
+                          opts.nick, opts.url)
+        agent = ldm.MucBotLDMEncoder(xmpp, opts.ldm)
 
-        sleek(q, opts.url)
+        sleek(opts.url)
 
     except Exception as e:
         print(e)
@@ -197,11 +201,14 @@ def handler(signal_received, frame):
         exit(0)
 
 
-def sleek(q, url):
+def sleek(url):
     features_starttls.STARTTLS.name
 
     features_bind.FeatureBind.name
     xmpp[features_mechanisms.FeatureMechanisms.name].unencrypted_plain = True
+
+    #logging.info("features: {}".format(list(xmpp)))
+
     xmpp.register_plugin(xep_0030.XEP_0030.name)  # Service Discovery
 
     xmpp.register_plugin('xep_0045')  # Multi-User Chat
